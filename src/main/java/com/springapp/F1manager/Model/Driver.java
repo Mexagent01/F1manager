@@ -6,10 +6,9 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "drivers")
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Driver {
     //Elsődlges kulcs
     @Id
@@ -23,6 +22,6 @@ public class Driver {
     private LocalDate birthDate;
 
     @ManyToOne
-    @JoinColumn(name = "team_id", nullable = false)
+    @JoinColumn(name = "team_id")
     private Team team; // Ez köti össze a két táblát
 }

@@ -2,14 +2,16 @@ package com.springapp.F1manager.Model;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "teams")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Team {
     //Elsődleges kulcs
     @Id
@@ -17,11 +19,11 @@ public class Team {
     private Long id;
 
     //A csapat tábla adatai
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
     private String country;
     private Integer foundedYear;
 
-    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
-    private List<Driver> drivers;
+    @OneToMany(mappedBy = "team")
+    private List<Driver> drivers= new ArrayList<>();
 }

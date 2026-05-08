@@ -1,31 +1,48 @@
 package com.springapp.F1manager.Controller;
 
 
+import com.springapp.F1manager.Dto.Driver.DriverResponseDto;
 import com.springapp.F1manager.Model.Driver;
 import com.springapp.F1manager.Service.DriverService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/drivers")
+@RequiredArgsConstructor
 public class DriverController {
 
-    @Autowired
     private DriverService driverService;
 
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public DriverResponseDto createDriver(@Valid @RequestBody DriverResponseDto requestDto){
+
+        return driverService.createDriver(requestDto);
+    }
+
     @GetMapping
-    public List<Driver> getAllDrivers() {
+    public List<DriverResponseDto> getAllDrivers() {
         return driverService.getAllDrivers();
     }
 
-    @PostMapping
-    public Driver createDriver(@RequestBody Driver driver) {
-        return driverService.saveDriver(driver);
+    @GetMapping("/{id}")
+    public DriverResponseDto getAllDriversById(@PathVariable Long id) {
+        return driverService.getAllDriversById(id);
+    }
+
+    @PutMapping
+    public DriverResponseDto updateDriver(@PathVariable Long id,
+                                          @Valid @RequestBody DriverRequestDto requestDto) {
+        return driverService.updateDriver(id,requestDto);
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteDriver(@PathVariable Long id) {
         driverService.deleteDriver(id);
     }

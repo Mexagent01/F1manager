@@ -13,7 +13,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TeamService {
 
-
     private final TeamRepository teamRepository;
 
     public TeamResponseDto createTeam(TeamRequestDto requestDto) {
@@ -27,30 +26,50 @@ public class TeamService {
 
         Team savedTeam = teamRepository.save(team);
 
-
-        return mapToDto(savedTeam);
+        return mapToResponse(savedTeam);
     }
 
     public List<TeamResponseDto> getAllTeams() {
         return teamRepository.findAll()
                 .stream()
-                .map(this::mapToDto)
+                .map(this::mapToResponse)
                 .toList();
     }
 
-    /**
-     * Ez a metódus végzi az "átcsomagolást" az adatbázis modellből
-     * a kifelé küldött DTO objektumba.
-     */
-    private TeamResponseDto mapToDto(Team team) {
-        return TeamResponseDto.builder()
-                .name(team.getName())
-                .country(team.getCountry())
-                .foundedYear(team.getFoundedYear())
-                .build();
+    public TeamResponseDto getAllTeamsById(Long id) {
+
+        Team team = teamRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Driver not found"));
+
+        return mapToResponse(team);
+    }
+
+    public TeamResponseDto updateTeam(Long id,
+                                          TeamRequestDto requestDto) {
+
+        Team team = teamRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Driver not found"));
+
+        team.setName(requestDto.getName());
+        team.setCountry(requestDto.getCountry());
+        team.setFoundedYear(requestDto.getFoundedYear());
+
+        Team updatedTeam = teamRepository.save(team);
+
+        return mapToResponse(updatedTeam);
     }
 
     public void deleteTeam(Long id) {
         teamRepository.deleteById(id);
+    }
+
+    private TeamResponseDto mapToResponse(Team team) {
+
+        return TeamResponseDto.builder()
+                .id(team.getId())
+                .name(team.getName())
+                .country(team.getCountry())
+                .foundedYear(team.getFoundedYear())
+                .build();
     }
 }

@@ -1,8 +1,8 @@
 package com.springapp.F1manager.Controller;
 
 
+import com.springapp.F1manager.Dto.Driver.DriverRequestDto;
 import com.springapp.F1manager.Dto.Driver.DriverResponseDto;
-import com.springapp.F1manager.Model.Driver;
 import com.springapp.F1manager.Service.DriverService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,12 +16,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DriverController {
 
-    private DriverService driverService;
+    private final  DriverService driverService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public DriverResponseDto createDriver(@Valid @RequestBody DriverResponseDto requestDto){
-
+    public DriverResponseDto createDriver(@Valid @RequestBody DriverRequestDto requestDto){
         return driverService.createDriver(requestDto);
     }
 
@@ -35,7 +34,7 @@ public class DriverController {
         return driverService.getAllDriversById(id);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public DriverResponseDto updateDriver(@PathVariable Long id,
                                           @Valid @RequestBody DriverRequestDto requestDto) {
         return driverService.updateDriver(id,requestDto);

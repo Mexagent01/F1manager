@@ -13,8 +13,13 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class DriverResponseDto {
 
+    private Long id;
+
     private String name;
+
     private int carNumber;
+
     private String nationality;
+
     private LocalDate birthDate;
 }

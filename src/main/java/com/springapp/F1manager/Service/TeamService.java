@@ -1,15 +1,12 @@
 package com.springapp.F1manager.Service;
 
-
 import com.springapp.F1manager.Dto.Team.TeamRequestDto;
 import com.springapp.F1manager.Dto.Team.TeamResponseDto;
-import com.springapp.F1manager.Model.Driver;
 import com.springapp.F1manager.Model.Team;
-import com.springapp.F1manager.Repo.DriverRepository;
 import com.springapp.F1manager.Repo.TeamRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -18,33 +15,42 @@ public class TeamService {
 
 
     private final TeamRepository teamRepository;
-    private final DriverRepository driverRepository;
-
 
     public TeamResponseDto createTeam(TeamRequestDto requestDto) {
-        Team team = findTeamById(requestDto.getTeamId());
 
-        Driver driver = Driver.builder()
+        Team team = Team.builder()
                 .name(requestDto.getName())
-                .carNumber.getcarNumber())
-                .nationality(nationality)
-                .localDate (birthdate)
+                .country(requestDto.getCountry())
+                .foundedYear(requestDto.getFoundedYear())
+                .build();
 
+
+        Team savedTeam = teamRepository.save(team);
+
+
+        return mapToDto(savedTeam);
     }
 
-    public Team saveTeam(Team team) {
-        return teamRepository.save(team);
+    public List<TeamResponseDto> getAllTeams() {
+        return teamRepository.findAll()
+                .stream()
+                .map(this::mapToDto)
+                .toList();
+    }
+
+    /**
+     * Ez a metódus végzi az "átcsomagolást" az adatbázis modellből
+     * a kifelé küldött DTO objektumba.
+     */
+    private TeamResponseDto mapToDto(Team team) {
+        return TeamResponseDto.builder()
+                .name(team.getName())
+                .country(team.getCountry())
+                .foundedYear(team.getFoundedYear())
+                .build();
     }
 
     public void deleteTeam(Long id) {
         teamRepository.deleteById(id);
-    }
-
-    public TeamRepository getTeamRepository() {
-        return teamRepository;
-    }
-
-    public void setTeamRepository(TeamRepository teamRepository) {
-        this.teamRepository = teamRepository;
     }
 }

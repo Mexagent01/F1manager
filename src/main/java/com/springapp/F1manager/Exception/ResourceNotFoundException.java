@@ -1,4 +1,4 @@
-package com.springapp.F1manager.exception;
+package com.springapp.F1manager.Exception;
 
 public class ResourceNotFoundException extends RuntimeException {
     public ResourceNotFoundException(String message, Throwable cause) {

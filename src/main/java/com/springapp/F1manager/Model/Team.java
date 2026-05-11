@@ -9,9 +9,9 @@ import java.util.List;
 @Entity
 @Table(name = "teams")
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class Team {
     //Elsődleges kulcs
     @Id
@@ -25,5 +25,5 @@ public class Team {
     private Integer foundedYear;
 
     @OneToMany(mappedBy = "team")
-    private List<Driver> drivers= new ArrayList<>();
+    private List<Driver> drivers;
 }

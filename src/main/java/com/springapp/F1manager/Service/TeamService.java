@@ -26,29 +26,29 @@ public class TeamService {
 
         Team savedTeam = teamRepository.save(team);
 
-        return mapToResponse(savedTeam);
+        return mapToDto(savedTeam);
     }
 
     public List<TeamResponseDto> getAllTeams() {
         return teamRepository.findAll()
                 .stream()
-                .map(this::mapToResponse)
+                .map(this::mapToDto)
                 .toList();
     }
 
-    public TeamResponseDto getAllTeamsById(Long id) {
+    public TeamResponseDto getTeamById(Long id) {
 
         Team team = teamRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Driver not found"));
+                .orElseThrow(() -> new RuntimeException("Team not found"));
 
-        return mapToResponse(team);
+        return mapToDto(team);
     }
 
     public TeamResponseDto updateTeam(Long id,
                                           TeamRequestDto requestDto) {
 
         Team team = teamRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Driver not found"));
+                .orElseThrow(() -> new RuntimeException("Team not found"));
 
         team.setName(requestDto.getName());
         team.setCountry(requestDto.getCountry());
@@ -56,14 +56,14 @@ public class TeamService {
 
         Team updatedTeam = teamRepository.save(team);
 
-        return mapToResponse(updatedTeam);
+        return mapToDto(updatedTeam);
     }
 
     public void deleteTeam(Long id) {
         teamRepository.deleteById(id);
     }
 
-    private TeamResponseDto mapToResponse(Team team) {
+    private TeamResponseDto mapToDto(Team team) {
 
         return TeamResponseDto.builder()
                 .id(team.getId())

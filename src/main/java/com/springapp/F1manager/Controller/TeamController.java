@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/drivers")
+@RequestMapping("/api/teams")
 @RequiredArgsConstructor
 public class TeamController {
 
@@ -29,14 +29,15 @@ public class TeamController {
     }
 
     @GetMapping("/{id}")
-    public TeamResponseDto getAllTeamsById(@PathVariable Long id) {
-        return teamService.getAllTeamsById(id);
+    public TeamResponseDto getTeamById(@PathVariable Long id) {
+        return teamService.getTeamById(id);
     }
 
     @PutMapping("/{id}")
     public TeamResponseDto updateTeam(@PathVariable Long id,
-                                          @Valid @RequestBody TeamRequestDto requestDto) {
-        return teamService.updateTeam(id,requestDto);
+                                      @Valid @RequestBody TeamRequestDto requestDto) {
+
+        return teamService.updateTeam(id, requestDto);
     }
 
     @DeleteMapping("/{id}")
